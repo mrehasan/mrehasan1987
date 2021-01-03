@@ -1,4 +1,8 @@
-var a = 3;
-var b = 5;
-var sum = a + b;
-document.write("Sum of " + a + "and" + b + "is: " + sum);
+var number = prompt("Enter a Number:");
+
+if (number < 0 ){
+    document.write("The Number is Negative");
+}
+else{
+    document.write("The Number is Positive");
+}

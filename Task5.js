@@ -1,4 +1,9 @@
-var age;
-age = "I am 33 years old";
+var number = prompt("Guess the Secret Number from 1-10");
 
-alert(age);
+
+if (number == 4){
+    document.write("BINGO, Correct Answer");
+}
+else if (number == 4+1){
+    document.write("Close Enough");
+}
