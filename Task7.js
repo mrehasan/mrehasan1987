@@ -1,4 +1,15 @@
-document.write ("<h1>Rules for Naming JS Variables</h1> <br>Variable names can only contain,numbers,$ and _.For Example:$my_1stVariable <br> Variable must begin with a letter, $ or _. For example; Surname,_name or name <br> Variable names are case sensitive <br> Variable names should not be JS keywords "); 
 
-
-
+    var text = "the quick brown fox jumps over lazy the dog";
+    var word = "'the'";
+    var temp = text.split("the");
+    var count = 0;
+    
+    for (var i = 0; i < temp.length; i++) {
+    if (word.indexOf(temp[i]))
+    count++;
+    
+    }
+    document.write("Text : " + text);
+    document.write("<br>");
+    document.write("There are " + count + " occurrenc(s) of the word " + word);
+    

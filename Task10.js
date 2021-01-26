@@ -1,29 +1,13 @@
-var a;
-document.write("Value after variable declaration is:" +a);
+var a = 16.765;
+var b = 12.37982;
+var c = -9.3079499;
 
-a= 2;
+var d = a.toFixed(2);
+var e = b.toFixed(2);
+var f = c.toFixed(4);
 
+document.write(a+"-->"+d);
 document.write("<br>");
-
-document.write("Initial value:"+a);
-
-a= ++a;
-
+document.write(b+"-->"+e);
 document.write("<br>");
-
-document.write("Value after increament is:" +a)
-
-document.write("<br>");
-a=a+7;
-
-document.write("Value after addition is:" +a);
-
-document.write("<br>");
-a= --a;
-document.write("Value after decrement is:" +a);
-
-document.write("<br>");
-a= a/3;
-
-document.write("The Remainder is:" +a);
-
+document.write(c+"-->"+f);

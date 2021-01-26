@@ -1,11 +1,9 @@
-document.write("<h1>Currency in PKR</h1>");
-
-var USD= 10 * 155;
-
-var Riyal= 25 * 41;
-
-
-document.write("Total currency in PKR is:"); 
-document.write(USD+Riyal);
-
-
+//var date = prompt("Enter the Date")
+var date = new Date();
+var day = date.getDate();
+alert(day);
+if(day < 16){
+    alert("First fifteen days of the month");
+}else{
+  alert("Last fifteen days of the month")
+}

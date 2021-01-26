@@ -1,3 +1,6 @@
-var birthyear;
-birthyear= "My Birth Year is 1987";
-document.write(birthyear);
+
+var dice = (Math.random()*6+1);
+var draw = (Math.floor(dice));
+
+  document.write("Random Dice Value :"+ draw);
+
