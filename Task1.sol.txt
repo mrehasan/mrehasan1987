@@ -1,0 +1,43 @@
+pragma solidity ^0.8.0;
+
+contract Studentinfo{
+    address payable private myAddress;
+   function setAddress(address payable add)public{
+   myAddress = add;
+}
+
+enum Gander{male,female}
+ enum Status{online,onsite}
+      
+struct Student{
+    uint RegNumber;
+    string Name;
+    bool feePaid;
+    bool BSdegree;
+    //address add;
+    Gander gander;
+    Status status;
+}
+
+uint public totalStudent;
+
+mapping(uint => Student) Studentinfo;
+
+
+function StudentEnrollment(uint _RegNumber,string memory _Name,bool _feePaid,bool _BSdegree,Gander gander,Status status)public  payable{
+      require (msg.value == 2 ether);
+    Student memory  s1 = Student(_RegNumber,_Name,_feePaid,_BSdegree,gander,status);
+    myAddress.transfer(msg.value);
+    Studentinfo[_RegNumber]= s1;
+    totalStudent++;
+}
+function StudentinfoData(uint _RegNumber)public view returns(uint,string memory,bool,bool){
+return (Studentinfo[_RegNumber].RegNumber,Studentinfo[_RegNumber].Name,Studentinfo[_RegNumber].feePaid,Studentinfo[_RegNumber].BSdegree);
+} 
+function getBalance()public view returns(uint){
+  return myAddress.balance;
+}
+function DegreeHolder(uint _RegNumber)public view   returns(bool){
+    return(Studentinfo[_RegNumber].BSdegree);
+}
+}
