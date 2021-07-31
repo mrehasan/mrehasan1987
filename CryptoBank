@@ -1,0 +1,64 @@
+// SPDX-License-Identifier: Unlicensed
+
+pragma solidity ^0.8.0;
+contract CryptoBank{
+    uint8 clientCount;
+    address owner;   
+    mapping (address => uint) private balances;
+    event Log(string);
+    event LogDepositMade(address indexed accountAddress, uint amount);
+    
+constructor() payable {
+        require(msg.value == 50 ether, "50 ether initial funding required");
+        
+        owner = msg.sender;
+        clientCount = 0;
+}
+function BankDeposit() public view returns(uint) {
+       require(msg.sender == owner ,"only Bank Owner have the rights");
+        return address(this).balance;
+    
+}
+function AccountBalance() public view returns (uint) {
+        return balances[msg.sender];
+    }
+function CloseBank(address payable _to) public {
+        require(msg.sender == owner, "You are not the owner");
+        selfdestruct(_to);
+        emit Log("The Bank has Been Closed");
+}
+
+    function Deposit(address _add) public payable {
+        balances[_add] += msg.value;
+        emit LogDepositMade(_add, msg.value);
+        emit Log("Ethers Deposited");
+        
+    }
+function AccWithdraw(uint amount) public payable returns (uint remainingBal) {
+        
+        if (amount <= balances[msg.sender]) {
+            balances[msg.sender] -= amount;
+           payable (msg.sender).transfer(amount);
+        }
+        return balances[msg.sender];
+}
+
+ function AccountOpening() public payable returns(uint) {
+       require(balances[msg.sender]==0,"Account Exists");
+       require(msg.value > 0 && msg.sender != address(0),"Value should not be 0");  
+       balances[msg.sender] = msg.value;
+        if (clientCount <=5) {
+            clientCount++;
+            balances[msg.sender] += 1 ether;
+        }
+        
+        emit Log("Hurray You Got Bonus");
+        return balances[msg.sender];
+    }
+   
+    function AccClosing()public payable {
+      require(msg.sender != address(0) && balances[msg.sender]>0,"Value should not be Zero");
+      payable(msg.sender).transfer(balances[msg.sender]);
+      delete balances[msg.sender];
+      }
+}
