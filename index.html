@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="stylesheet" href="style.css" />
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+	
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+   
+    <title>Expense Tracker</title>
+</head>
+<body class = "border">
+<div class="container">
+
+<h1 class= "h1"> Expense Tracker using HTML CSS </h1>
+
+    <form>
+		
+
+		<div class="row">
+		
+		  <div class="column">
+			
+			<div>
+				<h3 class = "h3">INCOME</h3>
+				<h4 id="income"></h4>
+				<button onclick="upinc();" class="button">Update</button>
+			</div>
+			
+			<div>
+				<h3>Add Income</h3>
+				<label for="one">Income type</label>
+				<input type="text" id="one"><br>
+				<label for="two">Income value</label>
+				<input type="number" id="two"><br>
+				<button onclick="addinc();" class="buttonClick">Click</button>
+			</div>
+			
+		  </div>
+		  
+		  <div class="column">
+			<div>
+				<h3 class = "h3">EXPENSE</h3>
+				<h4 id="expense"></h4>
+				<button onclick="upexp();" class="button">Update</button>
+			</div>
+			
+			<div>
+				<h3>Add Expense</h3>
+				<label for="three">Expense type</label>
+				<input type="text" id="three"><br>
+				<label for="four">Expense value</label>
+				<input type="number" id="four"><br>
+				<button onclick="addexp();" class="buttonClick">Click</button>
+			</div>
+			
+		  </div>
+		
+		</div>
+		
+		
+		
+        <div class = "bal1"> 
+            <h2> BALANCE </h2>
+            <h4 id="balance"></h4>
+            <button onclick="upbal();" class="button">Update</button>
+        </div>
+
+
+        <div>
+            <h3>Tranasaction History</h3>
+            <h4 id="his"></h4>
+            <button onclick="showTrans();" class="button">Update</button>
+        </div>
+		</form>
+
+</div><!-- container -->
+    <script>
+        const contractAddress= '0xD2EF19d7F5410569f34e5e661d0B73a9e7a7B735';
+        const contractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "_expense",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "_cat",
+				"type": "string"
+			}
+		],
+		"name": "addExpense",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "_income",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "_cat",
+				"type": "string"
+			}
+		],
+		"name": "addIncome",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "showBalance",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "showExpense",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "showHistory",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_Type",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Cat",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "_amount",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "showIncome",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalEntries",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        let bal = document.getElementById('balance');
+        let inc = document.getElementById('income');
+        let exp = document.getElementById('expense');
+        let his = document.getElementById('his');
+        let history = [];
+
+    
+        async function loadWeb3(){
+            if(window.ethereum){
+                window.web3 = new Web3(window.ethereum);
+                window.ethereum.enable();
+            }
+        }
+        async function loadContract(){
+            return await new window.web3.eth.Contract(contractABI, contractAddress);
+        }
+        async function upbal() {
+            let a = await window.contract.methods.showBalance().call();
+            bal.innerHTML = a;
+        }
+        async function upinc() {
+            let a = await window.contract.methods.showIncome().call();
+            inc.innerHTML = a;
+        }
+        async function upexp() {
+            let a = await window.contract.methods.showExpense().call();
+            exp.innerHTML = a;
+        }
+
+        async function addinc() {
+            await window.contract.methods.addIncome(document.getElementById('two').value,
+			 document.getElementById('one').value).send( 
+				 {from: '0x9B8508666970669623Bf6bD6B9d0F1389e6D0dc3'})
+        }
+        async function addexp() {
+            await window.contract.methods.addExpense(document.getElementById('four').value,
+			 document.getElementById('three').value).send(
+				  {from: '0x9B8508666970669623Bf6bD6B9d0F1389e6D0dc3'})
+        }
+        async function showTrans() {
+            let a = await window.contract.methods.totalEntries().call();
+            for(let i = 0; i < a; i++) {
+            history = await window.contract.methods.showHistory(i).call();
+            his.innerHTML += "<h3>"+" Tranasaction ID: " + history[0] + " ,Tranasaction Type: "+history[1]+" ,Tranasaction category: " + history[2] + " ,Tranasaction amount: "+ history[3] + "<h3> "+ "<br />" ;
+            }
+        }
+
+        async function load() {
+            await loadWeb3();
+            window.contract = await loadContract();
+        }
+        
+        load();
+		
+		</script>
+</body>
+</html>
